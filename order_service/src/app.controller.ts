@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern, GrpcMethod } from '@nestjs/microservices';
@@ -24,7 +25,7 @@ export class AppController {
   async createOrder(data: { message: string }) {
     console.log('Received gRPC request to create order with message:', data);
     return new Promise((resolve) => {
-      resolve({ message: `Order created with message: ${data.message}` });
+      resolve({ results: JSON.parse(data.message) });
     });
     // return { result: `Order created with message: ${data.message}` };
   }

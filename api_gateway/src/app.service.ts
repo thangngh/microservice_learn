@@ -1,5 +1,7 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+
 import { ClientKafka } from '@nestjs/microservices';
+import { ICreateUser } from './interface/user/user.interface';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -12,6 +14,8 @@ export class AppService implements OnModuleInit {
 
   onModuleInit() {
     this.userService.subscribeToResponseOf('test_user');
+    this.userService.subscribeToResponseOf('user.create');
+    this.userService.subscribeToResponseOf('user.getAll');
   }
 
   getHello(): string {
@@ -24,5 +28,13 @@ export class AppService implements OnModuleInit {
 
   testUserServiceMessage(message: string) {
     return this.userService.send('test_user', message);
+  }
+
+  createUser(body: ICreateUser) {
+    return this.userService.send('user.create', body);
+  }
+
+  getAllUsers() {
+    return this.userService.send('user.getAll', {});
   }
 }

@@ -3,6 +3,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { firstValueFrom } from 'rxjs';
+import { CreateUserDTO } from './dto/user/createuser.dto';
 
 @Controller()
 export class AppController {
@@ -25,5 +26,19 @@ export class AppController {
   @Post('test-order')
   testOrder(@Body('message') message: string) {
     return this.appService.testOrderServiceMessage(message);
+  }
+
+  @Post('create-user')
+  async createUser(@Body() body: CreateUserDTO) {
+    const response = await firstValueFrom(this.appService.createUser(body));
+
+    return response;
+  }
+
+  @Get('get-all-users')
+  async getAllUsers() {
+    const response = await firstValueFrom(this.appService.getAllUsers());
+
+    return response;
   }
 }

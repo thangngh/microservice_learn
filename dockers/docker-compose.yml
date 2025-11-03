@@ -42,6 +42,24 @@ services:
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
     networks:
       - api-gateway
+  user-service-db:
+    image: postgres:14
+    container_name: user-service-db
+    environment:
+      - POSTGRES_USER=example_postgres
+      - POSTGRES_PASSWORD=example_password
+      - POSTGRES_DB=example_db
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - user-service-network
 networks:
   api-gateway:
     driver: bridge
+  user-service-network:
+    driver: bridge
+
+volumes:
+  db_data:
