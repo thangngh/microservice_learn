@@ -9,6 +9,9 @@ services:
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - ./data/zookeeper:/var/lib/zookeeper/data
+      - ./log/zookeeper:/var/lib/zookeeper/log
     networks:
       - api-gateway
   kafka:
@@ -19,6 +22,8 @@ services:
     ports:
       - "9092:9092"
       - "29092:29092"
+    volumes:
+      - ./data/kafka:/var/lib/kafka/data
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -27,6 +32,7 @@ services:
       - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_LOG4J_LOGGERS="kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
     networks:
       - api-gateway
   kafka-ui:
